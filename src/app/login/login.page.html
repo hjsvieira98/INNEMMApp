@@ -1,0 +1,53 @@
+<!--
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="LoginForm" (ngSubmit)="login()">
+    <ion-item class="roudedInput">
+      <ion-icon align-self-center name="trash" slot="start"> </ion-icon>
+      <ion-label>Email</ion-label>
+      <ion-input formControlName="email" placeholder="Por-favor insira o seu email"></ion-input>
+    </ion-item>
+    <ion-item class="roudedInput">
+      <ion-icon align-self-center name="trash" slot="start"> </ion-icon>
+      <ion-label>password</ion-label>
+      <ion-input formControlName="password" placeholder="Passaword"></ion-input>
+    </ion-item>
+  <ion-button color="primary"  size="large" type="submit">Large</ion-button>
+  </form>
+</ion-content>
+-->
+
+<ion-content padding='true'>
+ <img src="assets/images/top.png" class="smallLogo"/>
+  <h1 style="text-align: center; font-weight: bold">Faça o seu login</h1>
+  <form style="margin: 8vh 1.5vh 0vh 0.5vh;" [formGroup]="LoginForm" (ngSubmit)="login()">
+    <div class="col-md-4 mb-3">
+      <div class="input-group">
+
+        <input formControlName="email" placeholder="Email"  autocomplete="off" type="email" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" required>
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupPrepend2"><ion-icon style="font-weight: bold" name="mail-outline"></ion-icon></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+
+      <div class="input-group">
+
+        <input formControlName="password" placeholder="Password"  autocomplete="off" type="password" class="form-control"  aria-describedby="inputGroupPrepend2" required>
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupPrepend3"><ion-icon style="font-weight: bold" name="lock-closed-outline"></ion-icon></span>
+        </div>
+      </div>
+    </div>
+
+    <ion-button expand="block" [class.ion-margin]="40" (click)="login()" share="round" color="danger">Login</ion-button>
+  </form>
+
+</ion-content>
+

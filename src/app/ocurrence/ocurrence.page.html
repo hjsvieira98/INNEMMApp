@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+<ion-toolbar>
+  <ion-title>
+    Ocorrencia
+  </ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button (click)="getOccurrences()"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="ocurrence">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Grupo de resgate </ion-card-subtitle>
+      <ion-card-title>{{ocurrence.title}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ocurrence.description}}
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Local da ocorrencia</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div #mapElement></div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

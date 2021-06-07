@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseURL: 'http://161.97.141.17/api/',
+  onseSignalAppId: '3bfc5269-17d5-4be5-ba36-50e25b0f639b',
+  googleProjectId:  '991872354824',
+  mapbox: {
+    accessToken: 'pk.eyJ1IjoicmFmYWVscGVyZWlyYTk3IiwiYSI6ImNrb2l1OWRoMTBvb3gyeHJtMjc5bHQzcjMifQ.a9JVwy1esI237WyBi2uQUQ\n'
+  }
 };
 
 /*
