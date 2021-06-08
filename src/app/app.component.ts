@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {LoginServiceService} from "./services/login-service.service";
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
+import {OcurrencesService} from "./services/ocurrences.service";
+import {OcurrencePage} from "./ocurrence/ocurrence.page";
 
 
 @Component({
@@ -18,7 +20,9 @@ export class AppComponent {
               private router: Router,
               private geolocation: Geolocation,
               private _loginService:LoginServiceService,
-              private backgroundGeolocation: BackgroundGeolocation
+              private backgroundGeolocation: BackgroundGeolocation,
+              private occurenceServices:OcurrencesService,
+              private ocurrencePage:OcurrencePage
 
 
             ) {
@@ -26,23 +30,24 @@ export class AppComponent {
       desiredAccuracy: 1 ,
       stationaryRadius: 1,
       distanceFilter: 1 ,
-      debug: true, //  enable this hear sounds for background-geolocation life-cycle.
-      stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+      debug: false, //  enable this hear sounds for background-geolocation life-cycle.
+      stopOnTerminate: true, // enable this to clear background location settings when the app terminates
     };
     this.backgroundGeolocation.configure(config)
       .then(() => {
 
         this.backgroundGeolocation.on(BackgroundGeolocationEvents.location).subscribe((location: BackgroundGeolocationResponse) => {
-          console.log(location);
-
-
-
+        console.log("asdasdasdasd")
+          this.occurenceServices.updateUserLatLong(localStorage.getItem("token"),2205
+            ,location.latitude,location.longitude).subscribe(res=> {
+              console.log(res["debug"])
+            if(res["inRange"]){
+              this.backgroundGeolocation.stop();
+            }
+            this.backgroundGeolocation.finish();
+          })
         });
-
       });
-
-
-
       if (platform.is('cordova')) {
 
         if (platform.is('android')) {

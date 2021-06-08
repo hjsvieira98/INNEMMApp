@@ -7,12 +7,24 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="ActionSheet">
+    <param name="ios-package" value="ActionSheet"/>
+  </feature>
+
+  <feature name="Notification">
+    <param name="ios-package" value="CDVNotification"/>
+  </feature>
+
   <feature name="Geolocation">
     <param name="ios-package" value="CDVLocation"/>
   </feature>
 
   <feature name="OneSignalPush">
     <param name="ios-package" value="OneSignalPush"/>
+  </feature>
+
+  <feature name="LaunchNavigator">
+    <param name="ios-package" value="LaunchNavigatorPlugin"/>
   </feature>
 
   

@@ -13,6 +13,10 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GoogleMapsModule } from '@angular/google-maps'
 import {BackgroundGeolocation} from "@ionic-native/background-geolocation/ngx";
+import {OcurrencePage} from "./ocurrence/ocurrence.page";
+import {Tab1Page} from "./tab1/tab1.page";
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
+
 
 
 @NgModule({
@@ -23,6 +27,8 @@ import {BackgroundGeolocation} from "@ionic-native/background-geolocation/ngx";
     OneSignal,
     Geolocation,
     BackgroundGeolocation,
+    OcurrencePage,
+    Tab1Page,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
   bootstrap: [AppComponent],

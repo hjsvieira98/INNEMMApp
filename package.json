@@ -26,11 +26,14 @@
     "@ionic-native/background-geolocation": "^5.33.0",
     "@ionic-native/core": "^5.32.1",
     "@ionic-native/geolocation": "^5.32.1",
+    "@ionic-native/launch-navigator": "^5.33.1",
     "@ionic-native/onesignal": "^5.32.1",
     "@ionic/angular": "^5.5.2",
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
     "@types/mapbox-gl": "^2.1.2",
+    "cordova-plugin-actionsheet": "^2.3.3",
+    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-geolocation": "^4.1.0",
     "install": "^0.13.0",
     "jetifier": "^2.0.0",
@@ -40,6 +43,7 @@
     "rxjs": "~6.6.0",
     "sweetalert2": "^11.0.11",
     "tslib": "^2.0.0",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

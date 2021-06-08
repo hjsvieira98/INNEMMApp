@@ -11,7 +11,7 @@ import {ModalOccurrenceAcceptedPageComponent} from "../modal-occurrence-accepted
 })
 export class Tab1Page {
   ocurrences: any;
-
+  selectedTab:any = '0';
   color:string = "#ffffff"
   constructor(private router: Router,
               private _ocurrencesservice:OcurrencesService,
@@ -21,7 +21,8 @@ export class Tab1Page {
     this.ocurrences = null
     this.getOccurrences().subscribe(res=>{
 
-      setTimeout(()=>{ this.ocurrences = res;console.log(this.ocurrences) }, 1000)
+      setTimeout(()=>{  this.ocurrences = res
+        this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == this.selectedTab); }, 1000)
       event.target.complete();
     })
 
@@ -34,14 +35,16 @@ export class Tab1Page {
   refreshOccurrences(){
     this.getOccurrences().subscribe(res=>{
 
-      setTimeout(()=>{ this.ocurrences = res;console.log(this.ocurrences) }, 1000)
+      setTimeout(()=>{ this.ocurrences = res
+        this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == this.selectedTab); }, 1000)
 
     })
   }
 
   ionViewWillEnter(){
     this.getOccurrences().subscribe(res=>{
-      setTimeout(()=>{ this.ocurrences = res; }, 1000)
+      setTimeout(()=>{ this.ocurrences = res
+        this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == this.selectedTab) }, 1000)
     })
   }
   viewOccurrence(ocurrence:any){
@@ -72,5 +75,14 @@ export class Tab1Page {
       }
     });
     return await modal.present();
+  }
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev.detail.value);
+    this.selectedTab = ev.detail.value;
+    this.getOccurrences().subscribe(res=>{
+      this.ocurrences = res
+      this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == ev.detail.value);
+
+    })
   }
 }

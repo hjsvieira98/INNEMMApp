@@ -18,10 +18,20 @@
     </ion-toolbar>
   </ion-header>
   <!-- List of Sliding Items -->
-
+  <ion-segment (ionChange)="segmentChanged($event)" value="{{selectedTab}}">
+    <ion-segment-button value="1">
+      <ion-label>Aceites</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="0">
+      <ion-label>Pendentes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2">
+      <ion-label>Recusadas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 <ion-list>
   <ion-item-sliding *ngFor=" let ocurrence of ocurrences ">
-      <ion-item-options  side="start">
+      <ion-item-options *ngIf="selectedTab == 0" side="start">
         <ion-item-option (click)="rejectOccurrence(ocurrence)" class="listCustomOptions" color="danger" expandable>
           Recusar
         </ion-item-option>
@@ -51,7 +61,7 @@
         <ion-row>
           <ion-col size="9">
             <b style="font-size: 20px">{{ocurrence.title}}</b>
-            <p style="font-size: 13px">
+            <p class="text" style="font-size: 13px">
               {{ocurrence.description}}
 
             </p>
@@ -66,7 +76,7 @@
 
       </ion-grid>
     </ion-item>
-      <ion-item-options side="end">
+      <ion-item-options *ngIf="selectedTab == 0"  side="end">
         <ion-item-option (click)="acceptOccurrence(ocurrence)" class="listCustomOptions" color="tertiary" expandable>
           Aceitar
         </ion-item-option>

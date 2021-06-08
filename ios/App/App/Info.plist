@@ -41,7 +41,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To Take Photos and Video</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Always allow Geolocation?</string>
+	<string>Always use location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow Geolocation?</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -52,6 +52,7 @@
 	<string>To Pick Photos from Library</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
