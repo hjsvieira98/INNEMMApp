@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { OneSignal } from '@ionic-native/onesignal/ngx'
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 import {environment} from "../environments/environment";
 import {Platform} from "@ionic/angular";
 import {Router} from "@angular/router";
@@ -38,13 +38,17 @@ export class AppComponent {
 
         this.backgroundGeolocation.on(BackgroundGeolocationEvents.location).subscribe((location: BackgroundGeolocationResponse) => {
         console.log("asdasdasdasd")
-          this.occurenceServices.updateUserLatLong(localStorage.getItem("token"),2205
+          this.occurenceServices.updateUserLatLong(localStorage.getItem("token"),localStorage.getItem('occurrence_id')
             ,location.latitude,location.longitude).subscribe(res=> {
               console.log(res["debug"])
             if(res["inRange"]){
               this.backgroundGeolocation.stop();
             }
-            this.backgroundGeolocation.finish();
+
+            if (platform.is('ios')) {
+              this.backgroundGeolocation.finish();
+            }
+
           })
         });
       });

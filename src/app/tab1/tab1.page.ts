@@ -56,7 +56,6 @@ export class Tab1Page {
   acceptOccurrence(occurrence){
     this._ocurrencesservice.acceptOccurrence(localStorage.getItem('token'),occurrence.id).subscribe(res=>{
       this.presentModal(occurrence)
-
     })
   }
 

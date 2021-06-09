@@ -19,6 +19,8 @@ export class OcurrencesService {
 
   acceptOccurrence(auth_token,occurrenceID) {
 
+    localStorage.setItem('occurrence_id', occurrenceID);
+
     let body = {occurrence_id: occurrenceID}
     let headers = new HttpHeaders();
     const authroizationToken = 'Bearer '.concat(auth_token);

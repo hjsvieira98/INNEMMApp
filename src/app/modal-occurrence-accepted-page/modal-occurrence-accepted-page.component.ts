@@ -18,8 +18,7 @@ export class ModalOccurrenceAcceptedPageComponent implements OnInit {
   constructor(public modalController: ModalController,
               private _occurrenceService: OcurrencesService,
               private geolocation: Geolocation,
-              private backgroundGeolocation: BackgroundGeolocation,
-              private launchNavigator: LaunchNavigator) {
+              private backgroundGeolocation: BackgroundGeolocation) {
   }
 
   ngOnInit() {
