@@ -46,11 +46,12 @@
 
                </p>
              </ion-col>
-              <ion-col size="3">
+              <ion-col size="3" style="text-align: center;">
               <b class="textcenter"> {{ocurrence.created_at  | date: 'dd/MM/yyyy'}}</b>
                 <br>
-                <ion-icon class="center" name="bookmark-outline"></ion-icon>
-
+                <img *ngIf="ocurrence.urgency_id == 3" src="assets/images/sirene_normal.png">
+                <img *ngIf="ocurrence.urgency_id == 2" src="assets/images/sirene_warraing.png">
+                <img *ngIf="ocurrence.urgency_id == 1" src="assets/images/sirene_danger.png">
               </ion-col>
            </ion-row>
 
@@ -66,10 +67,12 @@
 
             </p>
           </ion-col>
-          <ion-col size="3">
+          <ion-col size="3" style="text-align: center;">
             <b class="textcenter"> {{ocurrence.created_at  | date: 'dd/MM/yyyy'}}</b>
             <br>
-            <ion-icon class="center" name="bookmark-outline"></ion-icon>
+            <img *ngIf="ocurrence.urgency_id == 3" src="assets/images/sirene_normal.png">
+            <img *ngIf="ocurrence.urgency_id == 2" src="assets/images/sirene_warraing.png">
+            <img *ngIf="ocurrence.urgency_id == 1" src="assets/images/sirene_danger.png">
 
           </ion-col>
         </ion-row>
@@ -83,7 +86,23 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <div *ngIf="occurrence" (click)="viewOccurrence(occurrence)" class="divOccurrence">
+    <ion-grid  style="padding: 0; vertical-align: center">
+      <ion-row>
+        <ion-col size="9">
+          <b style="font-size: 20px">Ocurencia em Andamento</b>
+          <p class="text" style="font-size: 13px">
+            {{occurrence.title}}
 
+          </p>
+        </ion-col>
+        <ion-col size="3">
+          <ion-icon style="font-size: 40px;" name="arrow-forward-sharp"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </div>
   <div *ngIf="!ocurrences">
 
     <ion-list>

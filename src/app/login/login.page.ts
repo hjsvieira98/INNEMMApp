@@ -4,6 +4,8 @@ import {UserModel} from '../Models/User/user-model';
 import {LoginServiceService} from "../services/login-service.service";
 import {Router} from "@angular/router";
 import {Geolocation} from "@ionic-native/geolocation/ngx";
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-login',
@@ -29,9 +31,24 @@ export class LoginPage implements OnInit {
     });
   }
   login() {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
     this._loginService.Login(this.LoginForm.getRawValue()).subscribe(res=>{
       console.log(res["status"],res["token"])
       if(res["status"] == "success"){
+        Toast.fire({
+          icon: 'success',
+          title: 'Login efetuado com sucesso'
+        })
      localStorage.setItem('token', res["token"]);
       this._loginService.RegistaplayerID(localStorage.getItem("userId"),res["token"]).subscribe(res=>{
         this.geolocation.getCurrentPosition().then((resp) => {
@@ -47,6 +64,12 @@ export class LoginPage implements OnInit {
         }
 
       )
+      }
+      else{
+       Toast.fire({
+          icon: 'error',
+          title: 'Utilizador ou password incorrectas'
+        })
       }
     });
   }

@@ -5,6 +5,7 @@ import {Geolocation} from "@ionic-native/geolocation/ngx";
 import Swal from 'sweetalert2'
 import {BackgroundGeolocation} from "@ionic-native/background-geolocation/ngx";
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
+import {Tab1Page} from "../tab1/tab1.page";
 
 @Component({
   selector: 'app-modal-occurrence-accepted-page',
@@ -18,10 +19,12 @@ export class ModalOccurrenceAcceptedPageComponent implements OnInit {
   constructor(public modalController: ModalController,
               private _occurrenceService: OcurrencesService,
               private geolocation: Geolocation,
-              private backgroundGeolocation: BackgroundGeolocation) {
+              private backgroundGeolocation: BackgroundGeolocation,
+              private tab1Page:Tab1Page) {
   }
 
   ngOnInit() {
+
     this.geolocation.getCurrentPosition().then((resp) => {
       const origin = resp.coords.longitude + "," + resp.coords.latitude;
       console.log(origin);
@@ -46,6 +49,17 @@ export class ModalOccurrenceAcceptedPageComponent implements OnInit {
   }
 
  confirmaOcorrencia(){
+   const Toast = Swal.mixin({
+     toast: true,
+     position: 'top-end',
+     showConfirmButton: false,
+     timer: 3000,
+     timerProgressBar: true,
+     didOpen: (toast) => {
+       toast.addEventListener('mouseenter', Swal.stopTimer)
+       toast.addEventListener('mouseleave', Swal.resumeTimer)
+     }
+   })
    Swal.fire({
      title: 'Tem a certeza?',
      text: "ao aceitar esta ocorrencia tem o dever civico de comparecer",
@@ -56,13 +70,25 @@ export class ModalOccurrenceAcceptedPageComponent implements OnInit {
      confirmButtonText: 'Confirmar'
    }).then((result) => {
      if (result.isConfirmed) {
-       this._occurrenceService.acceptOccurrence(localStorage.getItem('token'),this.occurrence.id).subscribe(res=>{
+       this._occurrenceService.acceptOccurrence(localStorage.getItem('token'),this.occurrence).subscribe(res=>{
          this.backgroundGeolocation.start();
-         Swal.fire(
-           'Ocorrencia aceite com sucesso',
-           '',
-           'success'
+         this.tab1Page.getOccurrences().subscribe(res=>{
+           console.log(res);
+           this.tab1Page.ocurrences = res
+             this.tab1Page.ocurrences = this.tab1Page.ocurrences.filter(m=> m.pivot.status == this.tab1Page.selectedTab)
+              console.log(this.tab1Page.ocurrences);
+             this.modalController.dismiss({
+               'dismissed': true
+             });
+             Toast.fire({
+               icon: 'success',
+               title: 'Ocorrencia aceite com sucesso'
+             })
+         }
          )
+
+
+      this.tab1Page.refreshOccurrences();
        })
 
      }

@@ -20,7 +20,7 @@
       {{ocurrence.description}}
     </ion-card-content>
   </ion-card>
-  <ion-card>
+  <ion-card style="text-align: center" >
     <ion-card-header>
       <ion-card-title>Local da ocorrencia</ion-card-title>
     </ion-card-header>
@@ -28,5 +28,8 @@
     <ion-card-content>
       <div #mapElement></div>
     </ion-card-content>
+
+    <ion-button *ngIf="showCancelButton" (click)="cancelOccurrence()" color="danger" style="width: 83%;margin: 20px">Cancelar</ion-button>
   </ion-card>
+
 </ion-content>

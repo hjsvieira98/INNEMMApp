@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Perfil Utilizador
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,11 +9,56 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large"> Perfil Utilizador</ion-title>
     </ion-toolbar>
   </ion-header>
-<ion-button (click)="logout()">Xau</ion-button>
-  <ion-button (click)="ParaFDP()">Parar </ion-button>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <ion-card *ngIf="user">
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="text-center card-box">
+            <div class="member-card pt-2 pb-2">
+              <div class="thumb-lg member-thumb mx-auto">
+                <img *ngIf="user && user.image== null" src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle img-thumbnail" alt="profile-image">
+                <img *ngIf="user && user.image!= null" src="data:image/jpeg;base64,{{user.image}}" class="rounded-circle img-thumbnail" alt="profile-image"></div>
+              <div class="">
+                <h4>{{user.name}}</h4>
+                <p class="text-muted">@Grupos<span>| </span><span *ngFor="let grupo of user.groups"><a class="text-pink">
+                  {{grupo.name}}/</a></span></p>
+              </div>
+              <button (click)="logout()" type="button" style="width: 60%" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Logout</button>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- container -->
+  </div>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Configure as definições do utilizador</ion-card-subtitle>
+      <ion-card-title>Definições Gerais</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item (click)="presentAlertPrompt('Raio de envio de dados',30,10,'Insira o Raio',1)">
+        <ion-icon name="radio-sharp" slot="start"></ion-icon>
+        <ion-label>Raio de envio de dados</ion-label>
+      </ion-item>
+
+      <ion-item (click)="presentAlertPrompt('Precisão do envio de dados',50,5,'Insira uma Precisão ',2)">
+        <ion-icon name="analytics-sharp" slot="start"></ion-icon>
+        <ion-label>Precisão do envio de dados</ion-label>
+      </ion-item>
+
+      <ion-item (click)="presentAlertPrompt('Precisão do envio de dados',1,0.1,'Insira uma Precisão ',3)">
+        <ion-icon name="time-sharp" slot="start"></ion-icon>
+        <ion-label>Filtro de distância</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

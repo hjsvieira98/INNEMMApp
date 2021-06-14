@@ -13,6 +13,7 @@ export class Tab1Page {
   ocurrences: any;
   selectedTab:any = '0';
   color:string = "#ffffff"
+  occurrence:any;
   constructor(private router: Router,
               private _ocurrencesservice:OcurrencesService,
               public modalController: ModalController) {
@@ -22,9 +23,12 @@ export class Tab1Page {
     this.getOccurrences().subscribe(res=>{
 
       setTimeout(()=>{  this.ocurrences = res
-        this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == this.selectedTab); }, 1000)
+        this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == this.selectedTab);
+        this.occurrence = JSON.parse(localStorage.getItem('occurrence'))}, 1000)
       event.target.complete();
     })
+
+
 
   }
 
@@ -43,9 +47,12 @@ export class Tab1Page {
 
   ionViewWillEnter(){
     this.getOccurrences().subscribe(res=>{
+      console.log(res);
       setTimeout(()=>{ this.ocurrences = res
         this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == this.selectedTab) }, 1000)
     })
+    this.occurrence = JSON.parse(localStorage.getItem('occurrence'))
+    console.log(this.occurrence);
   }
   viewOccurrence(ocurrence:any){
 
@@ -54,9 +61,7 @@ export class Tab1Page {
   }
 
   acceptOccurrence(occurrence){
-    this._ocurrencesservice.acceptOccurrence(localStorage.getItem('token'),occurrence.id).subscribe(res=>{
       this.presentModal(occurrence)
-    })
   }
 
   rejectOccurrence(occurrence){
@@ -83,5 +88,21 @@ export class Tab1Page {
       this.ocurrences = this.ocurrences.filter(m=> m.pivot.status == ev.detail.value);
 
     })
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad')
+  }
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave')
+  }
+  ionViewDidLeave() {
+    console.log('ionViewDidLeave')
+  }
+  ionViewWillUnload() {
+    console.log('ionViewWillUnload')
+  }
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter');
   }
 }
