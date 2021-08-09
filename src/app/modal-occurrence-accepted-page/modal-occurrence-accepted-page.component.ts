@@ -15,7 +15,6 @@ import {Tab1Page} from "../tab1/tab1.page";
 export class ModalOccurrenceAcceptedPageComponent implements OnInit {
   @Input() occurrence: any;
   time:any;
-
   constructor(public modalController: ModalController,
               private _occurrenceService: OcurrencesService,
               private geolocation: Geolocation,
@@ -31,7 +30,6 @@ export class ModalOccurrenceAcceptedPageComponent implements OnInit {
       const destination = this.occurrence.longitude + "," + this.occurrence.latitude;
       console.log(destination);
       this._occurrenceService.getDistanceTime(origin, destination).subscribe(res => {
-        console.log(res);
         this.time = Math.floor(res["routes"][0].duration % 3600 / 60);
       })
     });
@@ -48,51 +46,65 @@ export class ModalOccurrenceAcceptedPageComponent implements OnInit {
     });
   }
 
- confirmaOcorrencia(){
-   const Toast = Swal.mixin({
-     toast: true,
-     position: 'top-end',
-     showConfirmButton: false,
-     timer: 3000,
-     timerProgressBar: true,
-     didOpen: (toast) => {
-       toast.addEventListener('mouseenter', Swal.stopTimer)
-       toast.addEventListener('mouseleave', Swal.resumeTimer)
-     }
+ async confirmaOcorrencia(){
+   const { value: tempoChegada  } = await Swal.fire({
+     title: 'Tempo previsto de chegada',
+     input: 'range',
+     inputLabel: 'Verifique o seu tempo de chegada',
+     inputPlaceholder: 'insira o seu tempo de chegda',
+     inputValue:this.time,
    })
-   Swal.fire({
-     title: 'Tem a certeza?',
-     text: "ao aceitar esta ocorrencia tem o dever civico de comparecer",
-     icon: 'warning',
-     showCancelButton: true,
-     confirmButtonColor: '#3085d6',
-     cancelButtonColor: '#d33',
-     confirmButtonText: 'Confirmar'
-   }).then((result) => {
-     if (result.isConfirmed) {
-       this._occurrenceService.acceptOccurrence(localStorage.getItem('token'),this.occurrence).subscribe(res=>{
-         this.backgroundGeolocation.start();
-         this.tab1Page.getOccurrences().subscribe(res=>{
-           console.log(res);
-           this.tab1Page.ocurrences = res
-             this.tab1Page.ocurrences = this.tab1Page.ocurrences.filter(m=> m.pivot.status == this.tab1Page.selectedTab)
-              console.log(this.tab1Page.ocurrences);
-             this.modalController.dismiss({
-               'dismissed': true
-             });
+
+   if (tempoChegada) {
+     Swal.fire(`Entered email: ${tempoChegada}`)
+     const Toast = Swal.mixin({
+       toast: true,
+       position: 'top-end',
+       showConfirmButton: false,
+       timer: 3000,
+       timerProgressBar: true,
+       didOpen: (toast) => {
+         toast.addEventListener('mouseenter', Swal.stopTimer)
+         toast.addEventListener('mouseleave', Swal.resumeTimer)
+       }
+     })
+     Swal.fire({
+       title: 'Tem a certeza?',
+       text: "ao aceitar esta ocorrencia tem o dever civico de comparecer",
+       icon: 'warning',
+       showCancelButton: true,
+       confirmButtonColor: '#3085d6',
+       cancelButtonColor: '#d33',
+       confirmButtonText: 'Confirmar'
+     }).then((result) => {
+       if (result.isConfirmed) {
+         this._occurrenceService.acceptOccurrence(localStorage.getItem('token'),this.occurrence,tempoChegada).subscribe(res=>{
+           this.backgroundGeolocation.start();
+           this.tab1Page.getOccurrences().subscribe(res=>{
+               console.log(res);
+               this.tab1Page.ocurrences = res
+               this.tab1Page.ocurrences = this.tab1Page.ocurrences.filter(m=> m.pivot.status == this.tab1Page.selectedTab)
+               console.log(this.tab1Page.ocurrences);
+               this.modalController.dismiss({
+                 'dismissed': true
+               });
              Toast.fire({
-               icon: 'success',
-               title: 'Ocorrencia aceite com sucesso'
+               icon: 'warning',
+               title: 'Aguarde enquanto o supervisor valida a sua participação'
              })
-         }
-         )
+             }
+           )
 
 
-      this.tab1Page.refreshOccurrences();
-       })
+           this.tab1Page.refreshOccurrences();
+         })
 
-     }
-   })
+       }
+     })
+   }else{
+
+   }
+
 
  }
 

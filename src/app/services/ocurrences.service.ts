@@ -17,11 +17,11 @@ export class OcurrencesService {
     return this.http.post(environment.baseURL +"getOccurrences", body ,{ headers });
   }
 
-  acceptOccurrence(auth_token,occurrence) {
+  acceptOccurrence(auth_token,occurrence,arrivetime) {
 
     localStorage.setItem('occurrence', JSON.stringify(occurrence));
 
-    let body = {occurrence_id: occurrence.id}
+    let body = {occurrence_id: occurrence.id,estimated_arrivetime:arrivetime}
     let headers = new HttpHeaders();
     const authroizationToken = 'Bearer '.concat(auth_token);
     headers = headers.append('Authorization', authroizationToken);

@@ -20,15 +20,42 @@
       {{ocurrence.description}}
     </ion-card-content>
   </ion-card>
-  <ion-card style="text-align: center" >
+  <ion-card *ngIf="ocurrence.pivot.status === 1">
     <ion-card-header>
-      <ion-card-title>Local da ocorrencia</ion-card-title>
+      <ion-card-subtitle>Dados sobre a ocorrência</ion-card-subtitle>
+      <ion-card-title>{{ocurrence.created_at | date: 'dd/MM/yyyy'}}</ion-card-title>
+
     </ion-card-header>
 
     <ion-card-content>
-      <div #mapElement></div>
-    </ion-card-content>
+      <ion-item *ngIf="ocurrence.urgency_id === 1">
+        <ion-label>Nivel de urgência</ion-label>
+        <ion-note slot="end" color="danger">{{ocurrence.urgency.name}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="ocurrence.urgency_id === 2">
+        <ion-label>Nivel de urgência</ion-label>
+        <ion-note slot="end" color="warning">{{ocurrence.urgency.name}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="ocurrence.urgency_id === 3">
+        <ion-label>Nivel de urgência</ion-label>
+        <ion-note slot="end" color="success">{{ocurrence.urgency.name}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Tempo de chegda</ion-label>
+        <ion-note slot="end" color="secondary">{{arrivedTime}}</ion-note>
+      </ion-item>
 
+
+    </ion-card-content>
+  </ion-card>
+  <ion-card style="text-align: center" >
+
+<!--    <ion-card-content>-->
+<!--      <div #mapElement></div>-->
+<!--    </ion-card-content>-->
+    <ion-card-content>
+      <div  #map></div>
+    </ion-card-content>
     <ion-button *ngIf="showCancelButton" (click)="cancelOccurrence()" color="danger" style="width: 83%;margin: 20px">Cancelar</ion-button>
   </ion-card>
 

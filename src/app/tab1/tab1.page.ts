@@ -90,19 +90,5 @@ export class Tab1Page {
     })
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad')
-  }
-  ionViewWillLeave() {
-    console.log('ionViewWillLeave')
-  }
-  ionViewDidLeave() {
-    console.log('ionViewDidLeave')
-  }
-  ionViewWillUnload() {
-    console.log('ionViewWillUnload')
-  }
-  ionViewDidEnter() {
-    console.log('ionViewDidEnter');
-  }
+
 }

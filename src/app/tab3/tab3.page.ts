@@ -19,11 +19,10 @@ export class Tab3Page {
   ngOnInit(){
     this.userService.getUserInfo(localStorage.getItem('token')).subscribe(res=>{
       this.user = res
-      console.log(res)
     })
   }
   logout(){
-    localStorage.setItem("token","");
+    localStorage.clear();
     this.router.navigate(['/']);
   }
 

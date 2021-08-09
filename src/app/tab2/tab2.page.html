@@ -15,10 +15,10 @@
 <ion-grid>
   <ion-row>
     <ion-col>
-      <ion-card style="background-color: #2dd36f; width: 90%">
+      <ion-card style="background-color: #2dd36f; width: 90%" *ngIf="AcceptedOccurrences" >
         <ion-card-header>
           <ion-card-subtitle style="color: white"><b>Aceites</b></ion-card-subtitle>
-          <ion-card-title style="color: white"><b>34 <ion-icon style="float: right; font-size: 40px" name="checkmark-done-circle-outline"></ion-icon></b></ion-card-title>
+          <ion-card-title  style="color: white"><b>{{AcceptedOccurrences.aceites}} <ion-icon style="float: right; font-size: 40px" name="checkmark-done-circle-outline"></ion-icon></b></ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
@@ -27,10 +27,10 @@
       </ion-card>
     </ion-col>
     <ion-col>
-      <ion-card style="background-color: tomato; width: 90%">
+      <ion-card style="background-color: tomato; width: 90%" *ngIf="RefusedOccurrences">
       <ion-card-header>
         <ion-card-subtitle style="color: white"><b>Recusadas</b></ion-card-subtitle>
-        <ion-card-title style="color: white"><b>12 <ion-icon style="float: right; font-size: 40px" name="close-circle-outline"></ion-icon></b></ion-card-title>
+        <ion-card-title style="color: white"><b>{{RefusedOccurrences.recusadas}} <ion-icon style="float: right; font-size: 40px" name="close-circle-outline"></ion-icon></b></ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
@@ -57,10 +57,11 @@
 
   <ion-grid>
     <ion-row>
-      <ion-card class="welcome-card">
+      <ion-card  *ngIf="AverageArriveTime"  class="welcome-card" style="width: 100%;">
         <ion-card-header>
           <ion-card-subtitle>Tempo médio de chegada ao quartel</ion-card-subtitle>
-          <ion-card-title>37 Minutos</ion-card-title>
+          <ion-card-title style="width: 100%">{{AverageArriveTime.tempo * 1000 * 60| date:'HH:mm':'UTC'}} Minutos</ion-card-title>
+          <ion-icon style="float: right; font-size: 40px;margin-bottom: 12px;" name="time-outline"></ion-icon>
         </ion-card-header>
         <ion-card-content>
 

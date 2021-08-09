@@ -7,6 +7,8 @@ import {Tab1Page} from "../tab1/tab1.page";
 import {BackgroundGeolocation} from "@ionic-native/background-geolocation/ngx";
 import Swal from "sweetalert2";
 import {OcurrencesService} from "../services/ocurrences.service";
+import {ModalOccurrenceAcceptedPageComponent} from "../modal-occurrence-accepted-page/modal-occurrence-accepted-page.component";
+import {ModalController} from "@ionic/angular";
 
 
 @Component({
@@ -16,20 +18,20 @@ import {OcurrencesService} from "../services/ocurrences.service";
 })
 export class OcurrencePage implements OnInit {
   ocurrence : any;
-  map: mapboxgl.Map;
   style = 'mapbox://styles/mapbox/streets-v11';
   showCancelButton : boolean = false;
-  @ViewChild('mapElement') mapElement: ElementRef;
+  coords: []
+  arrivedTime:any;
+  @ViewChild('map') map: ElementRef;
 
   constructor(private route: ActivatedRoute,
               private router:Router,
               private _occurenceservice:OccurrenceService,
               private _tab1Component:Tab1Page,
               private backgroundGeolocation: BackgroundGeolocation,
-              private _ocurrencesservice:OcurrencesService
-
-
-  ) { }
+              private _ocurrencesservice:OcurrencesService,
+              public modalController: ModalController
+) { }
 
   ngOnInit() {
 
@@ -37,7 +39,6 @@ export class OcurrencePage implements OnInit {
       let navParams = this.router.getCurrentNavigation().extras.state;
       this.ocurrence = navParams;
       let occurenceOppned = JSON.parse(localStorage.getItem('occurrence'));
-      console.log(occurenceOppned)
       if(occurenceOppned != null && occurenceOppned.id == this.ocurrence.id){
         this.showCancelButton = true
       }else{
@@ -46,26 +47,73 @@ export class OcurrencePage implements OnInit {
       this._occurenceservice.occurrenceOpened(localStorage.getItem('token'),this.ocurrence.id).subscribe(res=>
       {
 
+        this.coords = this.ocurrence.userlocations.map(function(num) {
+          return [num.long,num.lat]
+        })
+        this.formatMap(this.coords)
+        var diff = Math.abs(Date.parse(this.ocurrence.userlocations[0].created_at) -
+          Date.parse(this.ocurrence.userlocations[this.ocurrence.userlocations.length -1].created_at ));
+
+        console.log(diff)
+        this.arrivedTime = this.timeConvert(Math.floor((diff/1000)/60));
+
+
+        // @ts-ignore
+        // this._ocurrencesservice.getDistanceTime(this.coords[0],
+        //   this.coords[this.coords.length -1]  ).subscribe(res => {
+        //     this.arrivedTime = Math.floor(res["routes"][0].duration % 3600 / 60);
+        // })
       })
 
     });
+
   }
 
-  ngAfterViewInit(){
-    this.map = new mapboxgl.Map({
-      container: this.mapElement.nativeElement,
-      accessToken: environment.mapbox.accessToken,
-      style: 'mapbox://styles/mapbox/streets-v9',
-      zoom: 13,
-      center: [this.ocurrence.longitude, this.ocurrence.latitude],
+ async formatMap(coords){
+  console.log(coords)
+   var map = new mapboxgl.Map({
+     accessToken: environment.mapbox.accessToken,
+    container: this.map.nativeElement,
+     style: this.style,
+     center: coords[0] ? coords[0] : [this.ocurrence.longitude,this.ocurrence.latitude],
+     zoom: 12,
 
-    });
+   });
+    if(coords.length > 0){
+      map.on('load', function () {
+        map.addSource('route', {
+          'type': 'geojson',
+          'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': coords
+            }
+          }
+        });
+        map.addLayer({
+          'id': 'route',
+          'type': 'line',
+          'source': 'route',
+          'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          'paint': {
+            'line-color': '#888',
+            'line-width': 3
+          }
+        });
+      });
 
+    }else{
+      new mapboxgl.Marker()
+        .setLngLat([this.ocurrence.longitude, this.ocurrence.latitude])
+        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+          .setHTML("<img width='20px' src=''><br><h6>Bombeiro </h6>")).addTo(map)
 
-    let marker1 = new mapboxgl.Marker()
-      .setLngLat([this.ocurrence.longitude, this.ocurrence.latitude])
-  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-      .setHTML("<img width='20px' src=''><br><h6>Bombeiro </h6>")).addTo(this.map)
+    }
 
   }
   getOccurrences(){
@@ -96,6 +144,29 @@ export class OcurrencePage implements OnInit {
       }
     })
 
+  }
+  acceptOccurrence(){
+    this.presentModal(this.ocurrence)
+
+  }
+  async presentModal(occurrence) {
+    const modal = await this.modalController.create({
+      component: ModalOccurrenceAcceptedPageComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        'occurrence': occurrence,
+      }
+    });
+    return await modal.present();
+  }
+
+  timeConvert(n) {
+    var num = n;
+    var hours = (num / 60);
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+    return rhours + " h(s)" + rminutes + " m(s)";
   }
 
 }
